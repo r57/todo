@@ -1,5 +1,3 @@
-import { RouteComponentProps } from 'react-router-dom';
-
 export interface ListItemItems {
   content: string;
   done: boolean;

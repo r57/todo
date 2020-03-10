@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Card, CardContent, Typography, styled, CardActions, Button } from '@material-ui/core';
 import { ListItemComponentModel } from './list-item.model';
 import './list-item.component.scss';
-import { Link } from 'react-router-dom';
 
 const MyTypography = styled(Typography)({
   fontSize: 14,

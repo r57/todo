@@ -12,8 +12,8 @@ const server = new ApolloServer({
 });
 app.use('*', cors());
 app.use(compression());
-server.applyMiddleware({ app, path: '/graphql' });
+server.applyMiddleware({ app, path: '/' });
 const httpServer = createServer(app);
 httpServer.listen(
-  { port: 3000 },
-  (): void => console.log(`\n🚀      GraphQL is now running on http://localhost:3000/graphql`));
+  { port: 4000 },
+  (): void => console.log(`GraphQL is now running on http://localhost:4000/graphql`));

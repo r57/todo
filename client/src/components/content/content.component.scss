@@ -9,4 +9,11 @@
   max-width: 100%;
   overflow: auto;
   background-color: $blue900;
+  height: 100%;
+  width: 100%;
+
+  &.center {
+    justify-content: center;
+    align-items: center;
+  }
 }
