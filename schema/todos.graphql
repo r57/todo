@@ -1,0 +1,35 @@
+scalar Date
+
+type Todo @key(fields: "id") {
+    id: ID!
+    title: String!
+    comment: String
+    items: [TodoItem!]!
+}
+
+type TodoItem @key(fields: "id") {
+    id: ID!
+    todoId: ID!
+    content: String!
+    done: Boolean!
+    created: String!
+}
+
+extend type User @key(fields: "id") {
+    id: ID! @external
+    assignedTodos: [Todo!]!
+}
+
+type Query {
+    todos: [Todo!]!
+}
+
+type Mutation {
+    addTodo(title: String!, comment: String): Todo!
+    addTodoItem(todoId: String!, content: String!): TodoItem!
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
