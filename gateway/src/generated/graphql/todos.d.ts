@@ -27,7 +27,6 @@ export type Mutation = {
 
 export type MutationAddTodoArgs = {
   title: Scalars['String'];
-  comment?: Maybe<Scalars['String']>;
 };
 
 

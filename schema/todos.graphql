@@ -25,7 +25,7 @@ type Query {
 }
 
 type Mutation {
-    addTodo(title: String!, comment: String): Todo!
+    addTodo(title: String!): Todo!
     addTodoItem(todoId: String!, content: String!): TodoItem!
 }
 
