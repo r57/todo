@@ -5,6 +5,7 @@ import { ApolloServer, gql } from 'apollo-server';
 import { importSchema } from 'graphql-import';
 import path from 'path';
 
+import { Todo as ModelTodo, TodoItem as ModelTodoItem } from './src/model/todo';
 import { Resolvers, Todo, TodoItem } from './src/generated/graphql/todos';
 import { TodoService } from './src/service/todo-service';
 import { MockTodoService } from './src/service/mock-todo-service';
@@ -23,6 +24,14 @@ import { MockTodoService } from './src/service/mock-todo-service';
 
     const todoService: TodoService = new MockTodoService;
 
+    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done}) => {
+        return { id, todoId, content, created: created.toISOString(), done };
+    }
+
+    const serTodo: (todo: ModelTodo, items: ModelTodoItem[]) => Todo = ({id, title, comment}, items) => {
+        return { id, title, comment, items: items.map(serTodoItem) };
+    } 
+
     const resolvers: Resolvers = {
         Query: {
             todos: async () => {
@@ -32,10 +41,11 @@ import { MockTodoService } from './src/service/mock-todo-service';
                 return todos.map<Todo>(t => ({
                     id: t.id,
                     title: t.title,
+                    comment: t.comment,
                     items: items.filter(i => i.todoId == t.id).map<TodoItem>(i => ({
                         id: i.id,
                         todoId: i.todoId,
-                        content: i.todoId,
+                        content: i.content,
                         done: i.done,
                         created: i.created.toISOString(),
                     }))
@@ -45,15 +55,38 @@ import { MockTodoService } from './src/service/mock-todo-service';
         Mutation: {
             addTodo: async (_, { title }) => {
                 const id = await todoService.addTodo(title);
-                return { id, title, items: [] };
+                const todo = await todoService.getTodo(id);
+                const items = await todoService.listTodoItems([id]);
+                return serTodo(todo, items);
             },
+
             addTodoItem: async (_, { todoId, content }) => {
-                console.log(todoId, content);
                 const id = await todoService.addTodoItem(todoId, content);
-                console.log(id);
-                const { done, created } = await todoService.getTodoItem(todoId, id);
-                console.log(done, created);
-                return { id, todoId, content, created: created.toISOString(), done };
+                const item = await todoService.getTodoItem(todoId, id);
+                return serTodoItem(item);
+            },
+
+            editTodo: async (_, { id, title, comment }) => {
+                await todoService.editTodo(id, title, comment);
+                const todo = await todoService.getTodo(id);
+                const items = await todoService.listTodoItems([id]);
+                return serTodo(todo, items);
+            },
+
+            editTodoItem: async (_, { id, todoId, content, done }) => {
+                await todoService.editTodoItem(todoId, id, content, done);
+                const item = await todoService.getTodoItem(todoId, id);
+                return serTodoItem(item);
+            },
+
+            removeTodo: async (_, { id }) => {
+                await todoService.removeTodo(id);
+                return null;
+            },
+
+            removeTodoItem: async (_, { id, todoId }) => {
+                await todoService.removeTodoItem(todoId, id);
+                return null;
             }
         }
     };

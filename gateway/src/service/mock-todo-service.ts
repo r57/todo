@@ -39,12 +39,50 @@ export class MockTodoService implements TodoService {
 
     addTodoItem(todoId: string, content: string): Promise<string> {
         const currentItems = this.todoItems[todoId];
-        console.log(todoId, this.todoItems);
         if (currentItems === undefined) throw new Error("Unknown Todo ID")
         const id = this.newId();
         const newItem: TodoItem = { id, todoId, content, created: new Date, done: false };
-        this.todoItems[todoId] = [ ...currentItems, newItem ];
+        this.todoItems[todoId] = [...currentItems, newItem];
         return Promise.resolve(id);
+    }
+
+    editTodo(id: string, title?: string, comment?: string): Promise<Todo> {
+        this.todos = this.todos.map(todo => todo.id === id
+            ? this.partialUpdate(todo, { title, comment })
+            : todo
+        );
+        
+        return this.getTodo(id);
+    }
+
+    editTodoItem(todoId: string, id: string, content: string, done: boolean): Promise<TodoItem> {
+        const items = this.todoItems[todoId];
+        if (items === undefined) throw new Error("Unknown Todo ID");
+        this.todoItems[todoId] = items.map(todoItem => todoItem.id === todoId
+            ? this.partialUpdate(todoItem, { content, done })
+            : todoItem
+        );
+        
+        return this.getTodoItem(todoId, id);
+    }
+
+    async removeTodo(id: string): Promise<void> {
+        this.todos = this.todos.filter(t => t.id !== id);
+    }
+
+    async removeTodoItem(todoId: string, id: string): Promise<void> {
+        const items = this.todoItems[todoId];
+        if (items === undefined) throw new Error("Unknown Todo ID");
+        this.todoItems[id] = items.filter(ti => ti.id !== id);
+    }
+
+    private partialUpdate<T>(item: T, update: Partial<T>): T {
+        let copy = { ...item };
+        Object.keys(update).forEach(key => {
+            if (update[key] !== undefined) copy[key] = update[key];
+        })
+        
+        return copy;
     }
 
     private newId(): string {

@@ -1,6 +1,5 @@
 import { Todo, TodoItem } from "../model/todo";
 
-
 export interface TodoService {
 
     getTodo(id: string): Promise<Todo>;
@@ -14,5 +13,13 @@ export interface TodoService {
     addTodo(title: string): Promise<string>;
 
     addTodoItem(todoId: string, title: string): Promise<string>;
+
+    editTodo(id: string, title?: string, comment?: string): Promise<Todo>
+    
+    editTodoItem(todoId: string, id: string, content?: string, done?: boolean): Promise<TodoItem>
+
+    removeTodo(id: string): Promise<void>
+
+    removeTodoItem(todoId: string, id: string): Promise<void>
 
 }

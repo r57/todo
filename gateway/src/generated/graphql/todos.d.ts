@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -8,10 +8,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
   _FieldSet: any;
 };
-
 
 
 
@@ -22,6 +20,10 @@ export type Mutation = {
    __typename?: 'Mutation';
   addTodo: Todo;
   addTodoItem: TodoItem;
+  editTodo: Todo;
+  editTodoItem: TodoItem;
+  removeTodo?: Maybe<Scalars['Boolean']>;
+  removeTodoItem?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -35,6 +37,32 @@ export type MutationAddTodoItemArgs = {
   content: Scalars['String'];
 };
 
+
+export type MutationEditTodoArgs = {
+  id: Scalars['String'];
+  title?: Maybe<Scalars['String']>;
+  comment?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationEditTodoItemArgs = {
+  todoId: Scalars['String'];
+  id: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
+  done?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationRemoveTodoArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationRemoveTodoItemArgs = {
+  todoId: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type Query = {
    __typename?: 'Query';
   todos: Array<Todo>;
@@ -44,7 +72,7 @@ export type Todo = {
    __typename?: 'Todo';
   id: Scalars['ID'];
   title: Scalars['String'];
-  comment?: Maybe<Scalars['String']>;
+  comment: Scalars['String'];
   items: Array<TodoItem>;
 };
 
@@ -148,7 +176,6 @@ export type ResolversTypes = {
   TodoItem: ResolverTypeWrapper<TodoItem>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Mutation: ResolverTypeWrapper<{}>,
-  Date: ResolverTypeWrapper<Scalars['Date']>,
   User: ResolverTypeWrapper<User>,
 };
 
@@ -161,7 +188,6 @@ export type ResolversParentTypes = {
   TodoItem: TodoItem,
   Boolean: Scalars['Boolean'],
   Mutation: {},
-  Date: Scalars['Date'],
   User: User,
 };
 
@@ -173,7 +199,7 @@ export type TodoResolvers<ContextType = any, ParentType extends ResolversParentT
   __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['Todo']>, { __typename: 'Todo' } & Pick<ParentType, 'id'>, ContextType>,
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  comment?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   items?: Resolver<Array<ResolversTypes['TodoItem']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
@@ -191,11 +217,11 @@ export type TodoItemResolvers<ContextType = any, ParentType extends ResolversPar
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationAddTodoArgs, 'title'>>,
   addTodoItem?: Resolver<ResolversTypes['TodoItem'], ParentType, ContextType, RequireFields<MutationAddTodoItemArgs, 'todoId' | 'content'>>,
+  editTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationEditTodoArgs, 'id'>>,
+  editTodoItem?: Resolver<ResolversTypes['TodoItem'], ParentType, ContextType, RequireFields<MutationEditTodoItemArgs, 'todoId' | 'id'>>,
+  removeTodo?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationRemoveTodoArgs, 'id'>>,
+  removeTodoItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationRemoveTodoItemArgs, 'todoId' | 'id'>>,
 };
-
-export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
-  name: 'Date'
-}
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['User']>, { __typename: 'User' } & Pick<ParentType, 'id'>, ContextType>,
@@ -209,7 +235,6 @@ export type Resolvers<ContextType = any> = {
   Todo?: TodoResolvers<ContextType>,
   TodoItem?: TodoItemResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
-  Date?: GraphQLScalarType,
   User?: UserResolvers<ContextType>,
 };
 
