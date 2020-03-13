@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router';
 export default class ListComponent extends Component<RouteComponentProps> {
   listArray: ListItem[] = [
     {
-      id: '1',
+      id: '98yh4irnjwienfo0w8uh43r',
       title: 'todo',
       description: 'have to be done by Monday',
       items: [],

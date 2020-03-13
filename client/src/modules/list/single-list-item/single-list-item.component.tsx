@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
-interface what extends RouteComponentProps<{itemId: string}> {}
-
-interface whatState {
-  itemId: string;
+interface listItemProps extends RouteComponentProps<{itemId:string}> {
 }
 
-export default class SingleListItemComponent extends Component<what, whatState> {
-
-  constructor(props: what) {
-    super (props);
-    this.state = {
-      itemId: this.props.match.params.itemId,
-    };
+const GET_LIST_ITEM = gql`
+query TodoItemDetails ($itemId:String!){
+  todoItem(id:$itemId) {
+    title
+    id
   }
+}`;
 
-  render () {
-    return (
-      <div>'single item' {this.state.itemId}</div>
-    );
-  }
+const SingleListItemComponent: React.FC<listItemProps> = (props) => {
+
+  const {
+    data,
+    loading,
+    error
+  } = useQuery(GET_LIST_ITEM,
+    { variables: { itemId: props.match.params.itemId } }
+  );
+
+  return (
+    <div>'single item' {props.match.params.itemId}</div>
+  );
 }
+
+export default SingleListItemComponent;
