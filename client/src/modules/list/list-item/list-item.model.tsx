@@ -8,7 +8,7 @@ export interface ListItemItems {
 export interface ListItem {
   id: string;
   title: string;
-  description: string;
+  comment: string;
   items: ListItemItems[];
 }
 
