@@ -33,4 +33,11 @@ terminal and type `docker-compose up -d --build`
 1. `cd ~/${project_directory}/server`
 2. `yarn`
 3. `yarn run start:dev`
-  
+
+*Make sure to run with `yarn run start:dev`*
+The reason for this is `yarn start` will try to run the project before compilation
+To run with just `yarn start` make sure to build the project first
+Run `yarn run build` in that case
+
+
+
