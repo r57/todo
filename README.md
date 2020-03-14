@@ -7,7 +7,11 @@ BE -> NodeJS, Express, Apollo server, GraphQL, Apollo gateway, Scala gRPC
 
 Docker container + docker-compose
 
-# Instalattion
+# Instalation
+
+First clone the project locally with `git clone https://github.com/cyberduck1/todo.git`
+
+Clone with ssh `git clone git@github.com:cyberduck1/todo.git` _RECOMENDED_
 
 * For running the docker container type `docker-compose up` in the root folder
 * If running it the first time, a build is required so we add `--build` to the terminal execution
@@ -29,3 +33,4 @@ terminal and type `docker-compose up -d --build`
 1. `cd ~/${project_directory}/server`
 2. `yarn`
 3. `yarn run start:dev`
+  
