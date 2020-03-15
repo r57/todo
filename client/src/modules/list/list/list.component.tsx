@@ -13,8 +13,8 @@ const GET_LIST_ITEMS = gql`
       title,
       comment,
       items {
-        content,
-        done,
+        content
+        done
         created
       },
     }

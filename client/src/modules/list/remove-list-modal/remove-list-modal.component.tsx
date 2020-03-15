@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { IconButton } from '@material-ui/core';
+import './remove-list-modal.component.scss';
 
 interface RemoveListProps {id:string}
 
@@ -30,14 +31,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const REMOVE_TODO_LIST = gql`
-  mutation removeTodoList($id: string) {
+  mutation removeTodoList($id: String) {
     removeTodoList(id: $id){ id}
   }
 `;
 
 const RemoveListModalComponent: React.FC<RemoveListProps> = (props) => {
 
-//export default function RemoveListModal() {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
@@ -54,7 +54,7 @@ const RemoveListModalComponent: React.FC<RemoveListProps> = (props) => {
 
     return (
     <div>
-        <IconButton size="small" color="secondary" title="Remove list" aria-label="Remove list" component="span" onClick={handleOpen}>
+        <IconButton size="small" className="delete-button" color="secondary" title="Remove list" aria-label="Remove list" component="span" onClick={handleOpen}>
             <DeleteIcon />
         </IconButton>
         <Modal
