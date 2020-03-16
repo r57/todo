@@ -16,7 +16,7 @@ export interface TodoService {
 
     editTodo(id: string, title?: string, comment?: string): Promise<Todo>
     
-    editTodoItem(todoId: string, id: string, content?: string, done?: boolean): Promise<TodoItem>
+    editTodoItem(todoId: string, id: string, content?: string, done?: boolean, index?: number): Promise<TodoItem>
 
     removeTodo(id: string): Promise<void>
 

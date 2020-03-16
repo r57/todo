@@ -24,8 +24,8 @@ import { MockTodoService } from './src/service/mock-todo-service';
 
     const todoService: TodoService = new MockTodoService;
 
-    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done}) => {
-        return { id, todoId, content, created: created.toISOString(), done };
+    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done, index}) => {
+        return { id, todoId, content, created: created.toISOString(), done, index };
     }
 
     const serTodo: (todo: ModelTodo, items: ModelTodoItem[]) => Todo = ({id, title, comment}, items) => {
@@ -37,19 +37,7 @@ import { MockTodoService } from './src/service/mock-todo-service';
             todos: async () => {
                 const todos = await todoService.listTodos();
                 const items = await todoService.listTodoItems(todos.map(t => t.id));
-
-                return todos.map<Todo>(t => ({
-                    id: t.id,
-                    title: t.title,
-                    comment: t.comment,
-                    items: items.filter(i => i.todoId == t.id).map<TodoItem>(i => ({
-                        id: i.id,
-                        todoId: i.todoId,
-                        content: i.content,
-                        done: i.done,
-                        created: i.created.toISOString(),
-                    }))
-                }));
+                return todos.map(todo => serTodo(todo, items.filter(item => item.todoId == todo.id)));
             }
         },
         Mutation: {
@@ -73,8 +61,8 @@ import { MockTodoService } from './src/service/mock-todo-service';
                 return serTodo(todo, items);
             },
 
-            editTodoItem: async (_, { id, todoId, content, done }) => {
-                await todoService.editTodoItem(todoId, id, content, done);
+            editTodoItem: async (_, { id, todoId, content, done, index }) => {
+                await todoService.editTodoItem(todoId, id, content, done, index);
                 const item = await todoService.getTodoItem(todoId, id);
                 return serTodoItem(item);
             },
