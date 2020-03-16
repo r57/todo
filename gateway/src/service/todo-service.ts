@@ -10,7 +10,7 @@ export interface TodoService {
 
     listTodoItems(todoIds: string[]): Promise<TodoItem[]>;
 
-    addTodo(title: string): Promise<string>;
+    addTodo(title: string, comment?: string): Promise<string>;
 
     addTodoItem(todoId: string, title: string): Promise<string>;
 

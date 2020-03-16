@@ -24,7 +24,7 @@ type Query {
 }
 
 type Mutation {
-    addTodo(title: String!): Todo!
+    addTodo(title: String!, comment: String): Todo!
     addTodoItem(todoId: String!, content: String!): TodoItem!
     editTodo(id: String!, title: String, comment: String): Todo!
     editTodoItem(todoId: String!, id: String!, content: String, done: Boolean, index: Float): TodoItem!

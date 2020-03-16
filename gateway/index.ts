@@ -53,8 +53,8 @@ import { MockTodoService } from './src/service/mock-todo-service';
             }
         },
         Mutation: {
-            addTodo: async (_, { title }) => {
-                const id = await todoService.addTodo(title);
+            addTodo: async (_, { title, comment }) => {
+                const id = await todoService.addTodo(title, comment);
                 const todo = await todoService.getTodo(id);
                 const items = await todoService.listTodoItems([id]);
                 return serTodo(todo, items);
