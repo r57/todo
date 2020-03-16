@@ -3,6 +3,7 @@ import { SideBarItem } from './constants';
 import urls from './constants';
 import SideBarItemComponent from './item/side-bar-item.component';
 import './side-bar.component.scss';
+import InviteFriends from './components/inviteFriends';
 
 export default class SideBar extends Component {
   render() {
@@ -16,6 +17,7 @@ export default class SideBar extends Component {
             icon={singleUrl.icon}
           />
         ))}
+        <InviteFriends />
       </div>
     )
   }
