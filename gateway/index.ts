@@ -24,8 +24,8 @@ import { MockTodoService } from './src/service/mock-todo-service';
 
     const todoService: TodoService = new MockTodoService;
 
-    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done}) => {
-        return { id, todoId, content, created: created.toISOString(), done };
+    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done, }) => {
+        return { id, todoId, content, created: created.toISOString(), done, index };
     }
 
     const serTodo: (todo: ModelTodo, items: ModelTodoItem[]) => Todo = ({id, title, comment}, items) => {
@@ -34,6 +34,11 @@ import { MockTodoService } from './src/service/mock-todo-service';
 
     const resolvers: Resolvers = {
         Query: {
+            todo: async (_, { id }) => {
+                const todo = await todoService.getTodo(id);
+                const items = await todoService.listTodoItems([id]);
+                return serTodo(todo, items);
+            },
             todos: async () => {
                 const todos = await todoService.listTodos();
                 const items = await todoService.listTodoItems(todos.map(t => t.id));
@@ -47,7 +52,7 @@ import { MockTodoService } from './src/service/mock-todo-service';
                         todoId: i.todoId,
                         content: i.content,
                         done: i.done,
-                        created: i.created.toISOString(),
+                        created: i.created.toISOString()
                     }))
                 }));
             }
