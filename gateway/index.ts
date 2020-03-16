@@ -24,8 +24,8 @@ import { MockTodoService } from './src/service/mock-todo-service';
 
     const todoService: TodoService = new MockTodoService;
 
-    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done, }) => {
-        return { id, todoId, content, created: created.toISOString(), done, index };
+    const serTodoItem: (item: ModelTodoItem) => TodoItem = ({id, todoId, content, created, done }) => {
+        return { id, todoId, content, created: created.toISOString(), done };
     }
 
     const serTodo: (todo: ModelTodo, items: ModelTodoItem[]) => Todo = ({id, title, comment}, items) => {
