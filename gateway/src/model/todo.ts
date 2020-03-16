@@ -10,4 +10,5 @@ export interface TodoItem {
     content: string;
     done: boolean;
     created: Date;
+    index: number;
 }

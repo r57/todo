@@ -41,7 +41,8 @@ export class MockTodoService implements TodoService {
         const currentItems = this.todoItems[todoId];
         if (currentItems === undefined) throw new Error("Unknown Todo ID")
         const id = this.newId();
-        const newItem: TodoItem = { id, todoId, content, created: new Date, done: false };
+        const index = currentItems.reduce((max, item) => item.index >= max ? max + 1 : max, 0);
+        const newItem: TodoItem = { id, todoId, content, created: new Date, done: false, index };
         this.todoItems[todoId] = [...currentItems, newItem];
         return Promise.resolve(id);
     }
@@ -55,11 +56,11 @@ export class MockTodoService implements TodoService {
         return this.getTodo(id);
     }
 
-    editTodoItem(todoId: string, id: string, content: string, done: boolean): Promise<TodoItem> {
+    editTodoItem(todoId: string, id: string, content?: string, done?: boolean, index?: number): Promise<TodoItem> {
         const items = this.todoItems[todoId];
         if (items === undefined) throw new Error("Unknown Todo ID");
         this.todoItems[todoId] = items.map(todoItem => todoItem.id === todoId
-            ? this.partialUpdate(todoItem, { content, done })
+            ? this.partialUpdate(todoItem, { content, done, index })
             : todoItem
         );
         

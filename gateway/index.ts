@@ -73,8 +73,8 @@ import { MockTodoService } from './src/service/mock-todo-service';
                 return serTodo(todo, items);
             },
 
-            editTodoItem: async (_, { id, todoId, content, done }) => {
-                await todoService.editTodoItem(todoId, id, content, done);
+            editTodoItem: async (_, { id, todoId, content, done, index }) => {
+                await todoService.editTodoItem(todoId, id, content, done, index);
                 const item = await todoService.getTodoItem(todoId, id);
                 return serTodoItem(item);
             },
