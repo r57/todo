@@ -1,40 +1,18 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import { TextField, TextareaAutosize, OutlinedInput, FormControl, InputLabel } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import './add-list-modal.component.scss';
-
-function getModalStyle() {
-    return {
-        top: `30%`,
-        left: `50%`,
-        transform: `translate(-30%, -50%)`,
-    };
-}
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      position: 'absolute',
-      width: 400,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      padding: theme.spacing(2, 4, 3),
-    },
-  }),
-);
 
 const GET_LIST_ITEMS = gql`
   query TodoItems {
     todo {
-      id,
-      title,
-      comment,
+      id
+      title
+      comment
       items {
         content
         done
@@ -56,12 +34,11 @@ const ADD_TODO_LIST = gql`
 
 
 export default function AddListModal() {
-    const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
 
-    let titleInputRef = React.createRef<HTMLInputElement>();
-    let commentInputRef = React.createRef<HTMLTextAreaElement>();
+    const titleInputRef = React.createRef<HTMLInputElement>();
+    const commentInputRef = React.createRef<HTMLTextAreaElement>();
+
     const [addTodo] = useMutation(ADD_TODO_LIST);
 
     const handleOpen = () => {
@@ -78,7 +55,7 @@ export default function AddListModal() {
                 Add List
             </Button>
             <Modal open={open} onClose={handleClose}>
-                <div style={modalStyle} className={classes.paper}>
+                <div className="modal-inner">
                     <h2>Add a new ToDo list</h2>
                     <form className="add-list-form"
                         onSubmit={e => {
@@ -95,8 +72,7 @@ export default function AddListModal() {
                                 commentInputRef.current.value = '';
                                 handleClose();
                             }
-                        }}
-                        >
+                        }}>
                         <TextField label="Title" fullWidth inputRef={titleInputRef}/>
                         <TextField label="Comment" multiline={true} rows="5" fullWidth inputRef={commentInputRef}/>
                         <Button type="submit" variant="contained" color="primary" className="submit-button">Add Todo</Button>

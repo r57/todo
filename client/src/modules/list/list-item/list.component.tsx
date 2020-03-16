@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardContent, Typography, styled, CardActions, Button, Box } from '@material-ui/core';
+import { Box, Button, Card, CardActions, CardContent, styled, Typography } from '@material-ui/core';
 import { ListItemComponentModel } from './list-item.model';
-import './list-item.component.scss';
 import RemoveListModalComponent from '../remove-list-modal/remove-list-modal.component';
+import './list-item.component.scss';
 
 const MyTypography = styled(Typography)({
   fontSize: 14,

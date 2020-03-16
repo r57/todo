@@ -21,31 +21,25 @@ const GET_LIST_ITEMS = gql`
   }
 `;
 
-function goToItem() {
-  console.log('here')
-  //this.props.history.push(`${this.props.match.url}/${id}`);
-}
-
 interface ListItemProps extends RouteComponentProps {}
 
 interface WrappedListItem {
   todo: ListItem[];
 }
 
-const ListComponent: React.FC<ListItemProps> = () => {
-
+const ListComponent: React.FC<ListItemProps> = (props) => {
+  
   const { loading, error, data } = useQuery<WrappedListItem>(GET_LIST_ITEMS);
-
-  if (loading) return <p>Loading ...</p>;
-  if (error) return <p>There was an error fetching the list, please try again. </p>
-  if (!data) return <p>No Todo Lists</p>
 
   return (
     <Fragment>
       <AddListModal></AddListModal>
-      { data.todo.map(listItem => (
-        <ListItemComponent key={listItem.id} {...listItem} clicked={() => {goToItem();}}/>
-      ))}
+      { loading ? <p>Loading ...</p> : null }
+      { error ? <p>There was an error fetching the list, please try again. </p> : null }
+      { !data || !data.todo.length ? <p>No Todo lists available. </p> : null }
+      { data ? data.todo.map(listItem => (
+        <ListItemComponent key={listItem.id} {...listItem} clicked={() => { props.history.push(`${props.match.url}/${listItem.id}`) }}/>
+      )) : null }
     </Fragment>
   );
 }
