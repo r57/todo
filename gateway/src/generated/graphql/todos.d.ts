@@ -50,6 +50,7 @@ export type MutationEditTodoItemArgs = {
   id: Scalars['String'];
   content?: Maybe<Scalars['String']>;
   done?: Maybe<Scalars['Boolean']>;
+  index?: Maybe<Scalars['Float']>;
 };
 
 
@@ -83,6 +84,7 @@ export type TodoItem = {
   content: Scalars['String'];
   done: Scalars['Boolean'];
   created: Scalars['String'];
+  index: Scalars['Float'];
 };
 
 export type User = {
@@ -175,6 +177,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>,
   TodoItem: ResolverTypeWrapper<TodoItem>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  Float: ResolverTypeWrapper<Scalars['Float']>,
   Mutation: ResolverTypeWrapper<{}>,
   User: ResolverTypeWrapper<User>,
 };
@@ -187,6 +190,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'],
   TodoItem: TodoItem,
   Boolean: Scalars['Boolean'],
+  Float: Scalars['Float'],
   Mutation: {},
   User: User,
 };
@@ -211,6 +215,7 @@ export type TodoItemResolvers<ContextType = any, ParentType extends ResolversPar
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   done?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   created?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  index?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
