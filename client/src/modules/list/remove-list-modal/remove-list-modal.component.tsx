@@ -9,9 +9,24 @@ import './remove-list-modal.component.scss';
 
 interface RemoveListProps {id:string}
 
+const GET_LIST_ITEMS = gql`
+  query TodoItems {
+    todos {
+      id,
+      title,
+      comment,
+      items {
+        content
+        done
+        created
+      },
+    }
+  }
+`;
+
 const REMOVE_TODO_LIST = gql`
-  mutation removeTodoList($id: String) {
-    removeTodoList(id: $id){ id}
+  mutation removeTodoList($id: String!) {
+    removeTodo(id: $id)
   }
 `;
 
@@ -40,7 +55,11 @@ const RemoveListModalComponent: React.FC<RemoveListProps> = (props) => {
                 <form
                     onSubmit={e => {
                         e.preventDefault();
-                        removeTodo({ variables: { id: props.id } });
+                        removeTodo({
+                            variables: { id: props.id },
+                            refetchQueries: [{query: GET_LIST_ITEMS}],
+                        });
+                        handleClose();
                     }}
                     >
                     <Button type="reset" onClick={handleClose}>Cancel</Button>

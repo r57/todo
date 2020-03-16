@@ -9,10 +9,10 @@ import './add-list-modal.component.scss';
 
 const GET_LIST_ITEMS = gql`
   query TodoItems {
-    todo {
-      id
-      title
-      comment
+    todos {
+      id,
+      title,
+      comment,
       items {
         content
         done
@@ -23,8 +23,8 @@ const GET_LIST_ITEMS = gql`
 `;
 
 const ADD_TODO_LIST = gql`
-  mutation addTodoList($title: String, $comment: String) {
-    addTodoList(title: $title, comment: $comment){
+  mutation addTodo($title: String!) {
+    addTodo(title: $title){
         id
         title
         comment
@@ -64,7 +64,7 @@ export default function AddListModal() {
                                 addTodo({
                                     variables: {
                                         title: titleInputRef.current.value,
-                                        comment: commentInputRef.current.value
+                                        //comment: commentInputRef.current.value
                                     },
                                     refetchQueries: [{query: GET_LIST_ITEMS}],
                                 });
