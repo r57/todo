@@ -1,0 +1,29 @@
+scalar Date
+
+type Todo @key(fields: "id") {
+    id: ID!
+    title: String!
+    description: String!
+    items: [TodoItem!]!
+}
+
+type TodoItem @key(fields: "id") {
+    id: ID!
+    todoId: ID!
+    content: String!
+    done: Boolean!
+    created: Date!
+}
+
+extend type User @key(fields: "id") {
+    id: ID! @external
+    assignedTodos: [Todo!]!
+}
+
+type Query {
+    todos: [Todo!]!
+}
+
+schema {
+    query: Query
+}
