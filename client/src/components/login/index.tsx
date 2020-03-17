@@ -1,13 +1,31 @@
 import React, { Component } from 'react'
 import ContentComponent from '../content/content.component'
-import { TextField, Button } from '@material-ui/core'
+import SignUp from './signUp/signUp'
 import { UserAuthService } from '../../modules/services/user-auth.service'
 import './login.scss'
 
-export default class LoginComponent extends Component {
-  state = {
-    email: 'dude@gmail.com',
-    password: '1234',
+import { TextField, Button } from '@material-ui/core'
+import Link from '@material-ui/core/Link'
+import Grid from '@material-ui/core/Grid'
+
+interface State {
+  email: string,
+  password: string,
+  signUp: boolean
+}
+
+export default class LoginComponent extends Component<{}, State> {
+
+  initialState() {
+    this.setState({
+      email: 'dude@gmail.com',
+      password: '1234',
+      signUp: false
+    })
+  }
+
+  componentWillMount() {
+    this.initialState()
   }
 
   checkEmail() {
@@ -22,11 +40,16 @@ export default class LoginComponent extends Component {
     )
   }
 
+  showSignUp() {
+    this.setState({signUp: !this.state.signUp})
+  }
+
   render() {
     return (
       <ContentComponent className="center">
         <div className='login-form'>
-          <UserAuthService.Consumer>
+          {!this.state.signUp ? (
+            <UserAuthService.Consumer>
             {state => (
               <form
                 onSubmit={evt => {
@@ -34,20 +57,70 @@ export default class LoginComponent extends Component {
                   state.setState(this.checkEmail())
                 }}>
                 <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
                   onChange={val => this.setState({ email: val.target.value })}
                   value={this.state.email}
-                  label='Email'></TextField>
+                />
                 <TextField
-                  type='password'
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
                   value={this.state.password}
                   onChange={val =>
                     this.setState({ password: val.target.value })
                   }
-                  label='Password'></TextField>
-                <Button type='submit'>Submit</Button>
+                />
+                <Button 
+                  type='submit'
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+                <Link 
+                  href="#"
+                  variant="body2"
+                  onClick={() => {
+                    this.showSignUp()
+                    console.log(this.state.signUp, 'signUp')
+                  }}
+                >
+                  Don't have an account?
+                </Link>
               </form>
             )}
-          </UserAuthService.Consumer>
+            </UserAuthService.Consumer>
+          )
+          : (
+            <>
+              <SignUp />
+              <Grid container justify="center">
+              <Grid item>
+                <Link
+                  href="#"
+                  variant="body2"
+                  onClick={() => {
+                    this.showSignUp()
+                    console.log(this.state.signUp, 'signUp')
+                  }}
+                >
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </>
+          )}
         </div>
       </ContentComponent>
     )
