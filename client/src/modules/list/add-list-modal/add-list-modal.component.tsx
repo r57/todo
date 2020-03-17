@@ -23,8 +23,8 @@ const GET_LIST_ITEMS = gql`
 `;
 
 const ADD_TODO_LIST = gql`
-  mutation addTodo($title: String!) {
-    addTodo(title: $title){
+  mutation addTodo($title: String!, $comment: String) {
+    addTodo(title: $title, comment: $comment){
         id
         title
         comment
@@ -64,7 +64,7 @@ export default function AddListModal() {
                                 addTodo({
                                     variables: {
                                         title: titleInputRef.current.value,
-                                        //comment: commentInputRef.current.value
+                                        comment: commentInputRef.current.value
                                     },
                                     refetchQueries: [{query: GET_LIST_ITEMS}],
                                 });
