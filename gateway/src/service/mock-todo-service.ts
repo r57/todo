@@ -29,9 +29,9 @@ export class MockTodoService implements TodoService {
         }));
     }
 
-    addTodo(title: string): Promise<string> {
+    addTodo(title: string, comment: string = ''): Promise<string> {
         const id = this.newId();
-        const todo: Todo = { id, title, comment: '' };
+        const todo: Todo = { id, title, comment };
         this.todos = [...this.todos, todo];
         this.todoItems[id] = [];
         return Promise.resolve(id);
