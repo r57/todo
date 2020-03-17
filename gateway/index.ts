@@ -34,6 +34,11 @@ import { MockTodoService } from './src/service/mock-todo-service';
 
     const resolvers: Resolvers = {
         Query: {
+            todo: async (_, { id }) => {
+                const todo = await todoService.getTodo(id);
+                const items = await todoService.listTodoItems([id]);
+                return serTodo(todo, items);
+            },
             todos: async () => {
                 const todos = await todoService.listTodos();
                 const items = await todoService.listTodoItems(todos.map(t => t.id));

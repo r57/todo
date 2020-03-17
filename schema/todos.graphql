@@ -20,6 +20,7 @@ extend type User @key(fields: "id") {
 }
 
 type Query {
+    todo(id: String!): Todo
     todos: [Todo!]!
 }
 
