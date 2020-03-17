@@ -29,9 +29,9 @@ export class MockTodoService implements TodoService {
         }));
     }
 
-    addTodo(title: string): Promise<string> {
+    addTodo(title: string, comment: string = ''): Promise<string> {
         const id = this.newId();
-        const todo: Todo = { id, title, comment: '' };
+        const todo: Todo = { id, title, comment };
         this.todos = [...this.todos, todo];
         this.todoItems[id] = [];
         return Promise.resolve(id);
@@ -59,7 +59,7 @@ export class MockTodoService implements TodoService {
     editTodoItem(todoId: string, id: string, content?: string, done?: boolean, index?: number): Promise<TodoItem> {
         const items = this.todoItems[todoId];
         if (items === undefined) throw new Error("Unknown Todo ID");
-        this.todoItems[todoId] = items.map(todoItem => todoItem.id === todoId
+        this.todoItems[todoId] = items.map(todoItem => todoItem.id === id
             ? this.partialUpdate(todoItem, { content, done, index })
             : todoItem
         );
@@ -74,7 +74,7 @@ export class MockTodoService implements TodoService {
     async removeTodoItem(todoId: string, id: string): Promise<void> {
         const items = this.todoItems[todoId];
         if (items === undefined) throw new Error("Unknown Todo ID");
-        this.todoItems[id] = items.filter(ti => ti.id !== id);
+        this.todoItems[todoId] = items.filter(ti => ti.id !== id);
     }
 
     private partialUpdate<T>(item: T, update: Partial<T>): T {
