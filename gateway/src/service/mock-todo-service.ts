@@ -59,7 +59,7 @@ export class MockTodoService implements TodoService {
     editTodoItem(todoId: string, id: string, content?: string, done?: boolean, index?: number): Promise<TodoItem> {
         const items = this.todoItems[todoId];
         if (items === undefined) throw new Error("Unknown Todo ID");
-        this.todoItems[todoId] = items.map(todoItem => todoItem.id === todoId
+        this.todoItems[todoId] = items.map(todoItem => todoItem.id === id
             ? this.partialUpdate(todoItem, { content, done, index })
             : todoItem
         );
