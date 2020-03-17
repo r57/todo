@@ -15,7 +15,7 @@ const confirmAddTaskButtonSelector = 'span:contains("Add Todo")'
 const deleteTaskButtonSelector = '[title="Remove list"]'
 const confirmButtonSelector = 'span:contains("Yes")'
 const cancelButtonSelector = 'span:contains("Cancel")'
-
+const editTaskButtonSelector = 'span:contains("Edit List")'
 
 const addListModal = '[class="add-list-form"]'
 const deleteListModal = '[class="modal-inner"]'
@@ -49,11 +49,11 @@ describe('Tasks Manipulation', function () {
             .click()
         
         cy.get(deleteTaskButtonSelector)
-            .each(($el) => {
+            .each($el => {
                 $el.click()
                 cy.get(deleteListModal).within(() => {
                     cy.get(confirmButtonSelector)
-                        .click()
+                        .click({multiple:true})
                 })
             })
         
@@ -120,6 +120,34 @@ describe('Tasks Manipulation', function () {
 
         cy.get(mainContentSelector).should(($div) => {
             expect($div.get(0).innerText).to.not.contain(taskTitle)
+        })
+    })
+
+    it('User can edit a task', function () {
+        taskTitle = 'Do It On: ' + Date.now()
+
+        cy.get(listsNavItem)
+            .click()
+
+        cy.get(addListButtonSelector)
+            .click()       
+
+        cy.get(taskTitleInputSelector)
+            .type(taskTitle)
+            .should('have.value',taskTitle)
+
+        cy.get(confirmAddTaskButtonSelector)
+            .click()
+
+        cy.get(`[class="MuiCardContent-root"]>h3:contains("${taskTitle}")`)
+            .parent()
+            .parent().within(() => {
+                cy.get(editTaskButtonSelector)
+                    .click()
+        })
+
+        cy.get(mainContentSelector).should(($div) => {
+            expect($div.get(0).innerText).to.contain('single item')
         })
     })
 
