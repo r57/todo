@@ -1,14 +1,12 @@
-name: CI Test
+name: CI Deploy
 on:
-  pull_request:
   push:
     branches:
       - master
-      - dev
 
 jobs:
-  test:
-    name: Test
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
     env:
       NODE_ENV: test
@@ -28,23 +26,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - uses: actions/setup-node@v1.1.0
-      name: run frontend integration
-      with:
-        node-version: '10.x'
-    
-    - name: run frontend install
-      working-directory: ./client/
-      run: yarn install
-
-    - name: run frontend lint
-      working-directory: ./client/
-      run: yarn run lint
-  
-    - name: run frontend tests
-      working-directory: ./client/
-      run: yarn test
-      
     - name: run frontend build
       working-directory: ./client/
-      run: yarn build
+      run: yarn run predeploy
+    
+    - name: run frontend deploy
+      working-directory: ./client/
+      run: yarn run deploy
+
+
+
