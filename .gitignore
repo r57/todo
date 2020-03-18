@@ -1,12 +1,7 @@
-*/node_modules/
-/server/dist
-/server/package-lock.json
-
 **/src/generated
 
 **/.gradle
 **/.idea
-**/node_modules
 **/build
 **/node_modules
 **/target
