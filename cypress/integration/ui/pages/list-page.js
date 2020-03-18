@@ -13,7 +13,14 @@ export class List {
     }
 
     static deleteAllLists() {
-        cy.get(this.deleteListButton)
+        this.deleteListButton.getButton()
+            .each($el => {
+                $el.click()
+            })
+
+        /* not ideal since it should be within modal that is produced when clicked on 'deleteTaskButtonSelector', 
+        but CY clicks all delete buttons, layering confirm modals above themselves, and they are then not accessible */
+        this.confirmDeleteListButton.getButton()
             .each($el => {
                 $el.click()
             })
@@ -38,19 +45,57 @@ export class List {
         })
     }
 
+    static getListTitleInputField() {
+        return this.editListTitleInput.getInputField()
+    }
+
+    static getListCommentInputField() {
+        return this.editListCommentInput.getInputField()
+    }
+
+    static getListTitleInputFieldText() {
+        // TODO does not work
+        return this.editListTitleInput.getText()
+    }
+
+    static getListCommentInputFieldText() {
+        // TODO does not work
+        return this.editListCommentInput.getText()
+    }
+
     static setNewListTitle(newTitle) {
-        cy.get(editListTitleInput).getInputField()
+        this.getListTitleInputField()
             .clear()
             .type(newTitle)
-            .should('have.value',newTitle)
     }
 
     static setNewListComment(newComment) {
-        cy.get(editListCommentInput).getInputField()
+        this.getListCommentInputField()
             .clear()
             .type(newComment)
-            .should('have.value',newComment)
     }
+
+    static addListItem() {
+        this.addTaskItemsButton.click()
+    }
+
+    static setListItemTitle(listItemTitle) {
+        this.listItemTitleInput.getInputField()
+        .type(listItemTitle)
+    }
+
+    static confirmAddListItem() {
+        this.confirmAddTaskItemButton.click()
+    }
+
+    static getItemSection() {
+        return cy.get(`[class="todo-item-container"]>div>div>[value="${itemTitle}"]`)
+            .parent()
+    }
+
+    /*static getListItem(listItemTitle) {
+        return cy.get()
+    }*/
 }
 
 // input field selectors

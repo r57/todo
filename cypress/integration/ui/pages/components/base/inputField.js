@@ -17,4 +17,9 @@ export class InputField extends Component {
         cy.get(this.selector).type()
     }
 
+    getText() {
+        cy.get(this.selector).should(($selector) => {
+            return $selector.val()
+        })
+    }
 }
