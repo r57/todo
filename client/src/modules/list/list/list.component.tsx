@@ -1,43 +1,47 @@
-import React, { Component } from 'react';
-import { ListItem } from '../list-item/list-item.model';
+import React, { Component, Fragment } from 'react';
+import { Todo } from '../list-item/list-item.model';
 import ListItemComponent from '../list-item/list.component';
 import { RouteComponentProps } from 'react-router';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
+import AddListModal from '../add-list-modal/add-list-modal.component';
 
-export default class ListComponent extends Component<RouteComponentProps> {
-  listArray: ListItem[] = [
-    {
-      id: '98yh4irnjwienfo0w8uh43r',
-      title: 'todo',
-      description: 'have to be done by Monday',
-      items: [],
-    },
-    {
-      id: '2',
-      title: 'todo',
-      description: 'have to be done by Monday',
-      items: [],
-    },
-    {
-      id: '3',
-      title: 'todo',
-      description: 'have to be done by Monday',
-      items: [],
-    },
-    {
-      id: '4',
-      title: 'todo',
-      description: 'have to be done by Monday',
-      items: [],
+const GET_LIST_ITEMS = gql`
+  query TodoItems {
+    todos {
+      id
+      title
+      comment
+      items {
+        content
+        done
+        created
+      }
     }
-  ];
-
-  goToItem(id: string) {
-    this.props.history.push(`${this.props.match.url}/${id}`);
   }
+`;
 
-  render() {
-    return this.listArray.map((singleListItem: ListItem) => {
-      return <ListItemComponent key={singleListItem.id} {...singleListItem} clicked={() => this.goToItem(singleListItem.id)} />;
-    });
-  }
+interface ListItemProps extends RouteComponentProps {}
+
+interface WrappedListItem {
+  todos: Todo[];
 }
+
+const ListComponent: React.FC<ListItemProps> = (props) => {
+  
+  const { loading, error, data } = useQuery<WrappedListItem>(GET_LIST_ITEMS);
+
+  return (
+    <Fragment>
+      <AddListModal></AddListModal>
+      { loading ? <p>Loading ...</p> : null }
+      { error ? <p>There was an error fetching the list, please try again. </p> : null }
+      { !data || !data.todos.length ? <p>No Todo lists available. </p> : null }
+      { data ? data.todos.map(listItem => (
+        <ListItemComponent key={listItem.id} {...listItem} clicked={() => { props.history.push(`${props.match.url}/${listItem.id}`) }}/>
+      )) : null }
+    </Fragment>
+  );
+}
+
+export default ListComponent;

@@ -10,13 +10,13 @@ export interface TodoService {
 
     listTodoItems(todoIds: string[]): Promise<TodoItem[]>;
 
-    addTodo(title: string): Promise<string>;
+    addTodo(title: string, comment?: string): Promise<string>;
 
     addTodoItem(todoId: string, title: string): Promise<string>;
 
     editTodo(id: string, title?: string, comment?: string): Promise<Todo>
     
-    editTodoItem(todoId: string, id: string, content?: string, done?: boolean): Promise<TodoItem>
+    editTodoItem(todoId: string, id: string, content?: string, done?: boolean, index?: number): Promise<TodoItem>
 
     removeTodo(id: string): Promise<void>
 

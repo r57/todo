@@ -29,6 +29,7 @@ export type Mutation = {
 
 export type MutationAddTodoArgs = {
   title: Scalars['String'];
+  comment?: Maybe<Scalars['String']>;
 };
 
 
@@ -50,6 +51,7 @@ export type MutationEditTodoItemArgs = {
   id: Scalars['String'];
   content?: Maybe<Scalars['String']>;
   done?: Maybe<Scalars['Boolean']>;
+  index?: Maybe<Scalars['Float']>;
 };
 
 
@@ -65,7 +67,13 @@ export type MutationRemoveTodoItemArgs = {
 
 export type Query = {
    __typename?: 'Query';
+  todo?: Maybe<Todo>;
   todos: Array<Todo>;
+};
+
+
+export type QueryTodoArgs = {
+  id: Scalars['String'];
 };
 
 export type Todo = {
@@ -83,6 +91,7 @@ export type TodoItem = {
   content: Scalars['String'];
   done: Scalars['Boolean'];
   created: Scalars['String'];
+  index: Scalars['Float'];
 };
 
 export type User = {
@@ -170,11 +179,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>,
+  String: ResolverTypeWrapper<Scalars['String']>,
   Todo: ResolverTypeWrapper<Todo>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
-  String: ResolverTypeWrapper<Scalars['String']>,
   TodoItem: ResolverTypeWrapper<TodoItem>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  Float: ResolverTypeWrapper<Scalars['Float']>,
   Mutation: ResolverTypeWrapper<{}>,
   User: ResolverTypeWrapper<User>,
 };
@@ -182,16 +192,18 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {},
+  String: Scalars['String'],
   Todo: Todo,
   ID: Scalars['ID'],
-  String: Scalars['String'],
   TodoItem: TodoItem,
   Boolean: Scalars['Boolean'],
+  Float: Scalars['Float'],
   Mutation: {},
   User: User,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  todo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryTodoArgs, 'id'>>,
   todos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>,
 };
 
@@ -211,6 +223,7 @@ export type TodoItemResolvers<ContextType = any, ParentType extends ResolversPar
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   done?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   created?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  index?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

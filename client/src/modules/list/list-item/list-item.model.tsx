@@ -1,17 +1,19 @@
-export interface ListItemItems {
+export interface TodoItem {
+  id: string;
+  todoId: string;
   content: string;
-  done: boolean;
   created: string;
-  assigned?: string;
+  done: boolean;
+  index: number
 }
 
-export interface ListItem {
+export interface Todo {
   id: string;
   title: string;
-  description: string;
-  items: ListItemItems[];
+  comment: string;
+  items: TodoItem[];
 }
 
-export interface ListItemComponentModel extends ListItem {
+export interface ListItemComponentModel extends Todo {
   clicked: () => void;
 }
