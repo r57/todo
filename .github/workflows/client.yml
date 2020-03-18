@@ -28,3 +28,9 @@ jobs:
       run: npm run deploy
     - name: Updating Domain
       run: echo "Update domain"
+    - name: Deploy to GH Pages
+      run: |
+        git config --global user.email "ashcherbakov@fevo.com"
+        git config --global user.name "cyberduck1"
+        git remote set-url origin https://a4a83e30064cdd5f498773aa16dc33f4adad466c@github.com/your_github_username>/your_repo>.git
+        npm run deploy
