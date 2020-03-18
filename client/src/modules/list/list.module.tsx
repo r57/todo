@@ -7,8 +7,15 @@ export default class ListModule extends Component<RouteComponentProps> {
   render() {
     return (
       <Switch>
-        <Route path={this.props.match.url} exact component={ListComponent} />
-        <Route path={`${this.props.match.url}/:itemId`} component={SingleListItemComponent} />
+        <Route
+          path={this.props.match.url}
+          exact={true}
+          component={ListComponent}
+        />
+        <Route
+          path={`${this.props.match.url}/:itemId`}
+          component={SingleListItemComponent}
+        />
       </Switch>
     );
   }

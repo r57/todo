@@ -36,14 +36,16 @@ export default class LoginComponent extends Component {
                 <TextField
                   onChange={val => this.setState({ email: val.target.value })}
                   value={this.state.email}
-                  label='Email'></TextField>
+                  label='Email'
+                />
                 <TextField
                   type='password'
                   value={this.state.password}
                   onChange={val =>
                     this.setState({ password: val.target.value })
                   }
-                  label='Password'></TextField>
+                  label='Password'
+                />
                 <Button type='submit'>Submit</Button>
               </form>
             )}
