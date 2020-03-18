@@ -32,44 +32,7 @@ jobs:
       with:
         node-version: '10.x'
 
-    - run: yarn install ./client
-
-    - name: Setup PostgreSQL
-      uses: harmon758/postgresql-action@v1.0.0
-      with:
-        postgresql version: 11
-        postgresql db: databasename-test
-        postgresql user: dev
-        postgresql password: dev
-
-    - run: yarn lint
-    - run: knex migrate:latest
-    - run: yarn test:server
-
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
-    env:
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Set QA Environment
-        run: echo "::set-env name=ENVIRONMENT::qa"
-
-      - name: Set Production Environment
-        if: github.ref == 'refs/heads/master'
-        run: echo "::set-env name=ENVIRONMENT::prod"
-
-      - name: Configure Heroku
-        run: heroku config:set GIT_HASH=${GITHUB_SHA} GIT_BRANCH=${GITHUB_REF} --app my-app-name-$ENVIRONMENT
-
-      - name: Push to Heroku
-        run: git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/my-app-name-$ENVIRONMENT.git $GITHUB_SHA:master
-
-      - name: Run Database Migrations
-        run: heroku run knex migrate:latest --app my-app-name-$ENVIRONMENT
+    - run: cd ./client/
+    - run: yarn install
+    - run: yarn build
+    - run: yarn test
