@@ -36,11 +36,11 @@ export default class LoginComponent extends Component<{}, State> {
       this.state.email !== 'dude@gmail.com' ||
       this.state.password !== '1234'
     ) {
-      alert('Wrong password dude/et')
+      alert('Wrong password dude/et');
     }
     return (
       this.state.email === 'dude@gmail.com' && this.state.password === '1234'
-    )
+    );
   }
 
   showSignUp() {
@@ -136,6 +136,6 @@ export default class LoginComponent extends Component<{}, State> {
           </div>
         </Container>
       </ContentComponent>
-    )
+    );
   }
 }

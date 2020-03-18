@@ -4,6 +4,7 @@ export interface TodoItem {
   content: string;
   created: string;
   done: boolean;
+  index: number
 }
 
 export interface Todo {
