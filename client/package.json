@@ -1,4 +1,5 @@
 {
+  "homepage": "https://cyberduck1.github.io/todo/",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -36,7 +37,9 @@
     "eject": "react-scripts eject",
     "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --format verbose",
     "lint:fix": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
-    "tslint-check": "tslint-config-prettier-check ./tslint.json"
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
