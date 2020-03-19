@@ -30,6 +30,10 @@ jobs:
       name: run frontend integration
       with:
         node-version: '10.x'
+      
+    - name: run frontend install
+      working-directory: ./client/
+      run: yarn
 
     - name: run frontend build
       working-directory: ./client/
