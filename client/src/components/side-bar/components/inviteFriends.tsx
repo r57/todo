@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag';
-import './inviteFriends.scss'
+import './inviteFriends.scss';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
@@ -13,18 +13,18 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const InviteFriends = () => {
-  const [showModal, setShowModal] = useState(false)
-  const [inviteEmail, setInviteEmail] = useState('')
-  
+  const [showModal, setShowModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
+
   const ADD_INVITE_EMAIL = gql`
     mutation addInviteEmail($user: String, $inviteEmail: String) {
-      addInviteEmail(user: $user, inviteEmail: $inviteEmail){
+      addInviteEmail(user: $user, inviteEmail: $inviteEmail) {
         id
         inviteEmail
       }
     }
-  `
-  const [addInviteEmail] = useMutation(ADD_INVITE_EMAIL)
+  `;
+  const [addInviteEmail] = useMutation(ADD_INVITE_EMAIL);
 
   return (
     <>
@@ -62,32 +62,33 @@ const InviteFriends = () => {
             </DialogContentText>
 
             <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
-              fullWidth
+              autoFocus={true}
+              margin='dense'
+              id='name'
+              label='Email Address'
+              type='email'
+              fullWidth={true}
               onChange={e => {
-                setInviteEmail(e.target.value)
+                setInviteEmail(e.target.value);
               }}
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => {setShowModal(!showModal)}} color="primary">
+            <Button
+              onClick={() => {
+                setShowModal(!showModal);
+              }}
+              color='primary'>
               Cancel
             </Button>
-            <Button 
-              type="submit"
-              color="primary"
-            >
+            <Button type='submit' color='primary'>
               Send invitation
             </Button>
           </DialogActions>
         </form>
       </Dialog>
     </>
-  )
-}
+  );
+};
 
-export default InviteFriends
+export default InviteFriends;

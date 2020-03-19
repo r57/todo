@@ -71,7 +71,7 @@ export default class SortableList<T> extends Component<
           .map((singleItem, index) => (
             <div
               className='sortable-item'
-              draggable
+              draggable={true}
               key={'draggable_' + index}
               item-index={singleItem.index}
               onDrop={event => this.onDrop(event)}
