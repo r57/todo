@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react'
 import ContentComponent from '../content/content.component'
 import SignUp from './signUp/signUp'
@@ -30,17 +31,25 @@ export default class LoginComponent extends Component<{}, State> {
   componentWillMount() {
     this.initialState()
   }
+=======
+import { Button, TextField } from '@material-ui/core';
+import React, { Component } from 'react';
+import { UserAuthService } from '../../modules/services/user-auth.service';
+import ContentComponent from '../content/content.component';
+import './login.scss';
+
+export default class LoginComponent extends Component {
+  state = {
+    email: 'dude@gmail.com',
+    password: '1234',
+  };
+>>>>>>> b557bc2e37914b6e78088d39b1f3956bc7d1d547
 
   checkEmail() {
-    if (
-      this.state.email !== 'dude@gmail.com' ||
-      this.state.password !== '1234'
-    ) {
+    if (this.state.email !== 'dude@gmail.com' || this.state.password !== '1234') {
       alert('Wrong password dude/et');
     }
-    return (
-      this.state.email === 'dude@gmail.com' && this.state.password === '1234'
-    );
+    return this.state.email === 'dude@gmail.com' && this.state.password === '1234';
   }
 
   showSignUp() {
@@ -49,6 +58,7 @@ export default class LoginComponent extends Component<{}, State> {
 
   render() {
     return (
+<<<<<<< HEAD
       <ContentComponent className="center">
         <Container component="main" maxWidth="xs">
           <div className='login-form'>
@@ -132,6 +142,21 @@ export default class LoginComponent extends Component<{}, State> {
                   </Grid>
                 </Grid>
               </div>
+=======
+      <ContentComponent className='center'>
+        <div className='login-form'>
+          <UserAuthService.Consumer>
+            {state => (
+              <form
+                onSubmit={evt => {
+                  evt.preventDefault();
+                  state.setState(this.checkEmail());
+                }}>
+                <TextField onChange={val => this.setState({ email: val.target.value })} value={this.state.email} label='Email' />
+                <TextField type='password' value={this.state.password} onChange={val => this.setState({ password: val.target.value })} label='Password' />
+                <Button type='submit'>Submit</Button>
+              </form>
+>>>>>>> b557bc2e37914b6e78088d39b1f3956bc7d1d547
             )}
           </div>
         </Container>
