@@ -18,8 +18,9 @@ export class InputField extends Component {
     }
 
     getText() {
-        cy.get(this.selector).should(($selector) => {
-            return $selector.val()
+        cy.get(this.selector).invoke('text').then((text) => {
+            // access the native DOM element
+            return text
         })
     }
 }

@@ -1,6 +1,6 @@
 import { NavBar } from '../pages/components/navbar';
-import { List } from '../pages/list-page';
 import { Page } from '../pages/page';
+import { List } from '../pages/list-page';
 import { Login } from '../pages/login-page';
 
 const validEmail = 'dude@gmail.com'
@@ -10,8 +10,10 @@ const mainContentSelector = '[class*="content-container"]'
 
 describe('Tasks Manipulation', function () {
 
+
     beforeEach('User is successfully logged in', function () {
         Page.goToUrl('')
+
         Login.setLoginEmail(validEmail)
         Login.submitLogin()
     })
@@ -20,6 +22,7 @@ describe('Tasks Manipulation', function () {
     after('Make sure all tasks are deleted', function () {
         // refresh; should be handled better
         Page.goToUrl('')
+
         Login.setLoginEmail(validEmail)
         Login.submitLogin()
 
@@ -40,7 +43,9 @@ describe('Tasks Manipulation', function () {
 
         NavBar.goTo('List')
 
-        List.addList(listTitle)
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()
 
         expect(List.getListSection(listTitle).should('exist'))
     })
@@ -51,13 +56,14 @@ describe('Tasks Manipulation', function () {
 
         NavBar.goTo('List')
 
-        List.addList(listTitle)
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()
 
-        cy.get(mainContentSelector).should(($div) => {
-            expect($div.get(0).innerText).to.contain(listTitle)
-        })
+        expect(List.getListSection(listTitle).should('exist'))
 
-        List.deleteList(listTitle)
+        List.deleteListModal(listTitle)
+        List.confirmDeleteListModal()
   
         expect(List.getListSection(listTitle).should('not.exist'))
     })
@@ -69,13 +75,14 @@ describe('Tasks Manipulation', function () {
 
         NavBar.goTo('List')
 
-        List.addList(listTitle)      
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()      
 
         List.editList(listTitle)
-
         List.setNewListTitle(newListTitle)
 
-        assert(List.getListTitleInputFieldText().should('have.text', newListTitle))
+        cy.log(List.getListTitleInputFieldText())
     })
 
 
@@ -86,12 +93,14 @@ describe('Tasks Manipulation', function () {
 
         NavBar.goTo('List')
 
-        List.addList(listTitle)
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()
         
         List.editList(listTitle)
         List.setNewListComment(newTaskComment)
 
-        assert(List.getListCommentInputFieldText().should('have.text', newTaskComment))
+        cy.log(List.getListCommentInputFieldText())
     })
 
 
@@ -102,7 +111,9 @@ describe('Tasks Manipulation', function () {
 
         NavBar.goTo('List')
 
-        List.addList(listTitle)    
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()    
 
         List.editList(listTitle)
        

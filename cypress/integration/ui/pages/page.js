@@ -4,7 +4,7 @@ export class Page {
     navBar = new NavBar();
 
     static goToPage(pageName) {
-        this.navBar.goToPage(pageName);
+        this.navBar.goTo(pageName);
     }
 
     static goToUrl(url) {

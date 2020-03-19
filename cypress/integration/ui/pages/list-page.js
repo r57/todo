@@ -4,11 +4,16 @@ import { InputField } from "./components/base/inputField"
 
 export class List {
 
-    static addList(listTitle) {
+    static addList() {
         this.addListButton.click()
+    }
+
+    static setListTitle(listTitle) {
         this.taskTitleInput.getInputField()
             .type(listTitle)
-            .should('have.value',listTitle)
+    }
+
+    static confirmAddListModal() {
         this.confirmAddListButton.click()
     }
 
@@ -32,10 +37,13 @@ export class List {
             .parent()
     }
 
-    static deleteList(listTitle) {
+    static deleteListModal(listTitle) {
         this.getListSection(listTitle).within(() => {
             this.deleteListButton.click()
         })
+    }
+
+    static confirmDeleteListModal() {
         this.confirmDeleteListButton.click()
     }
 
@@ -60,7 +68,10 @@ export class List {
 
     static getListCommentInputFieldText() {
         // TODO does not work
-        return this.editListCommentInput.getText()
+        cy.get('label:contains("Comment")~div>input').then(($div) => {
+            // access the native DOM element
+            $div.get(0).innerText
+        })
     }
 
     static setNewListTitle(newTitle) {
@@ -117,5 +128,5 @@ List.addTaskItemsButton = new Button('[title="Add items"]')
 List.confirmAddTaskItemButton = new Button('span:contains("Add todo items")')
 
 // modals selectors
-List.addListModal = '[class="add-list-form"]'
-List.deleteListModal = '[class="modal-inner"]'
+// List.addListModal = '[class="add-list-form"]'
+// List.deleteListModal = '[class="modal-inner"]'
