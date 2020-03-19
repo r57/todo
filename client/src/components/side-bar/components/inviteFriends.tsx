@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { useMutation } from '@apollo/react-hooks'
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import './inviteFriends.scss';
 
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const InviteFriends = () => {
@@ -28,34 +28,33 @@ const InviteFriends = () => {
 
   return (
     <>
-    <div 
-      className="add-user-box"
-      onClick={() => {
-        setShowModal(!showModal)
-      }}
-    >
-      <p>Invite Friend</p>
-      <div className="add-user-icon">
-        <PersonAddIcon />
+      <div
+        className='add-user-box'
+        onClick={() => {
+          setShowModal(!showModal);
+        }}>
+        <p>Invite Friend</p>
+        <div className='add-user-icon'>
+          <PersonAddIcon />
+        </div>
       </div>
-    </div>
-    <Dialog 
-      open={showModal} 
-      onClose={() => {
-        setShowModal(!showModal)
-      }}  
-      aria-labelledby="form-dialog-title"
-    >
-      <form onSubmit={e => {
-        e.preventDefault()
-        addInviteEmail({
-          variables: {
-            user: 'userId',
-            inviteEmail: inviteEmail
-          }
-        })
-      }}>
-        <DialogTitle id="form-dialog-title">Add friend</DialogTitle>
+      <Dialog
+        open={showModal}
+        onClose={() => {
+          setShowModal(!showModal);
+        }}
+        aria-labelledby='form-dialog-title'>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            addInviteEmail({
+              variables: {
+                user: 'userId',
+                inviteEmail,
+              },
+            });
+          }}>
+          <DialogTitle id='form-dialog-title'>Add friend</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To add your friend, please enter his or her email address here.
