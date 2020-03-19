@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import './content.component.scss';
 
-export default class ContentComponent extends Component<{className?: string}> {
+export default class ContentComponent extends Component<{
+  className?: string;
+}> {
   render() {
     return (
       <div className={`content-container ${this.props.className}`}>

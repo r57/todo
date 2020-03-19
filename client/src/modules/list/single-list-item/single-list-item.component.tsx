@@ -18,8 +18,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import './single-list-item.component.scss';
 import SortableList from '../../../components/sortable-list';
 
-interface listItemProps extends RouteComponentProps<{ itemId: string }> {}
-
 interface WrappedTodo {
   todo: Todo;
 }
@@ -91,7 +89,9 @@ const REMOVE_TODO_ITEM = gql`
   }
 `;
 
-const SingleListItemComponent: React.FC<listItemProps> = props => {
+const SingleListItemComponent: React.FC<RouteComponentProps<{
+  itemId: string;
+}>> = props => {
   const [items, setItems] = useState('');
   const [addTodoItemOpen, setAddTodoItemOpen] = useState(false);
   const [validTitle, setValidTitle] = useState(true);
@@ -137,7 +137,7 @@ const SingleListItemComponent: React.FC<listItemProps> = props => {
   if (!data) return <p>There is no data for selected todo.</p>;
 
   return (
-    <Card className="height-100">
+    <Card className='height-100'>
       <CardHeader>
         <h2>Edit {data.todo.title}</h2>
       </CardHeader>
@@ -145,9 +145,9 @@ const SingleListItemComponent: React.FC<listItemProps> = props => {
         <TextField
           name='titleField'
           label='Title'
-          fullWidth
+          fullWidth={true}
           value={title}
-          required
+          required={true}
           onChange={e => setTitle(e.target.value)}
           onBlur={e => {
             if (e.target.value && e.target.value.trim().length > 0) {
@@ -166,7 +166,7 @@ const SingleListItemComponent: React.FC<listItemProps> = props => {
         <em hidden={validTitle}>Title is required</em>
         <TextField
           label='Comment'
-          fullWidth
+          fullWidth={true}
           value={data.todo.comment}
           onChange={e => {
             editTodo({
@@ -198,7 +198,7 @@ const SingleListItemComponent: React.FC<listItemProps> = props => {
                 multiline={true}
                 label='Items'
                 rows='4'
-                fullWidth
+                fullWidth={true}
                 onChange={e => setItems(e.target.value)}
               />
               <div className='modal-bottom-container'>
@@ -259,7 +259,7 @@ const SingleListItemComponent: React.FC<listItemProps> = props => {
                 />
 
                 <TextField
-                  fullWidth
+                  fullWidth={true}
                   value={item.content}
                   onChange={e => {
                     editTodoItem({
@@ -268,7 +268,8 @@ const SingleListItemComponent: React.FC<listItemProps> = props => {
                         content: e.target.value,
                       },
                     });
-                  }}></TextField>
+                  }}
+                />
 
                 <IconButton
                   color='secondary'
