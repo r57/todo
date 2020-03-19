@@ -25,6 +25,11 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
+          
+    - uses: actions/setup-node@v1.1.0
+      name: run frontend integration
+      with:
+        node-version: '10.x'
 
     - name: run frontend build
       working-directory: ./client/
