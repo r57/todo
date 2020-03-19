@@ -17,10 +17,11 @@ export class InputField extends Component {
         cy.get(this.selector).type()
     }
 
+    // todo does not work
     getText() {
-        cy.get(this.selector).invoke('text').then((text) => {
+        cy.get(this.selector).then(($div) => {
             // access the native DOM element
-            return text
+            cy.log($div.get(0).innerText)
         })
     }
 }

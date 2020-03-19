@@ -11,8 +11,10 @@ export class Page {
         cy.visit(url);
     }
 
-    static getMainContent() {
-        return cy.get(this.mainContent)
+    static checkMainContentText(option, text) {
+        cy.get(this.mainContent).invoke('text').then((extractedText) => {
+            extractedText.should(option, text)
+        })
     }
 }
 

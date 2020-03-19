@@ -61,17 +61,15 @@ export class List {
         return this.editListCommentInput.getInputField()
     }
 
-    static getListTitleInputFieldText() {
+    static getListTitleText() {
         // TODO does not work
-        return this.editListTitleInput.getText()
+        cy.get('label:contains("Title")~div>input').its('val').as('text')
     }
 
-    static getListCommentInputFieldText() {
+    static getListCommentText(text) {
         // TODO does not work
-        cy.get('label:contains("Comment")~div>input').then(($div) => {
-            // access the native DOM element
-            $div.get(0).innerText
-        })
+        cy.get('label:contains("Comment")~div>input').its('val').as('text')
+
     }
 
     static setNewListTitle(newTitle) {
@@ -92,21 +90,33 @@ export class List {
 
     static setListItemTitle(listItemTitle) {
         this.listItemTitleInput.getInputField()
-        .type(listItemTitle)
+            .type(listItemTitle)
     }
 
     static confirmAddListItem() {
         this.confirmAddTaskItemButton.click()
     }
 
-    static getItemSection() {
+    static getItemSection(itemTitle) {
         return cy.get(`[class="todo-item-container"]>div>div>[value="${itemTitle}"]`)
+            .parent()
+            .parent()
             .parent()
     }
 
-    /*static getListItem(listItemTitle) {
-        return cy.get()
-    }*/
+    static changeItemTitle(oldTitle, newTitle) {
+        this.getItemSection(oldTitle).within(() => {
+            cy.get('div>input')
+            .clear()
+            .type(newTitle)
+        })
+    }
+
+    static deleteItem(itemTitle) {
+        this.getItemSection(itemTitle).within(() => {
+            this.deleteItemButton.click()
+        })
+    }
 }
 
 // input field selectors
@@ -126,6 +136,7 @@ List.cancelDeleteListButton = new Button('span:contains("Cancel")')
 List.editListButton = new Button('span:contains("Edit List")')
 List.addTaskItemsButton = new Button('[title="Add items"]')
 List.confirmAddTaskItemButton = new Button('span:contains("Add todo items")')
+List.deleteItemButton = new Button('[title="Remove item"]')
 
 // modals selectors
 // List.addListModal = '[class="add-list-form"]'
