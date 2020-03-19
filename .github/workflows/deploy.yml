@@ -31,8 +31,8 @@ jobs:
       - name: run frontend lint
         working-directory: ./client/
         run: | 
-          yarn run lint
           yarn install
+          yarn run lint
           yarn build
           yarn export
 
