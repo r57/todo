@@ -28,12 +28,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - run: yarn install
-      - run: yarn build
-      - run: yarn export
+      - name: run frontend lint
+        working-directory: ./client/
+        run: | 
+          yarn run lint
+          yarn install
+          yarn build
+          yarn export
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
+          working-directory: ./client/
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
