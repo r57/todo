@@ -39,12 +39,12 @@ jobs:
       working-directory: ./client/
       run: yarn run predeploy
     
-    - name: deploy
-      uses: peaceiris/actions-gh-pages@v2.3.0
-      env:
-        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_SSH_KEY }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: public/
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.PERSONAL_TOKEN }}
+        publish_dir: ./public
+        publish_branch: master  # deploying branch
 
 
 
