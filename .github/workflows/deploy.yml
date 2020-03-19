@@ -9,7 +9,7 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: test
+      NODE_ENV: deploy
 
     steps:
     - name: Checkout
@@ -25,6 +25,15 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
+
+    - uses: actions/setup-node@v1.1.0
+      name: run frontend integration
+      with:
+        node-version: '10.x'
+      
+    - name: run frontend install
+      working-directory: ./client/
+      run: yarn
 
     - name: run frontend build
       working-directory: ./client/
