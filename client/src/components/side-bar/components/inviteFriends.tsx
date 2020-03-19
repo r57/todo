@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import AddUser from '../assets/add-user.png';
 import gql from 'graphql-tag';
 import './inviteFriends.scss';
 
@@ -11,6 +10,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const InviteFriends = () => {
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +34,9 @@ const InviteFriends = () => {
           setShowModal(!showModal);
         }}>
         <p>Invite Friend</p>
-        <img src={AddUser} className='add-user-icon' />
+        <div className='add-user-icon'>
+          <PersonAddIcon />
+        </div>
       </div>
       <Dialog
         open={showModal}
