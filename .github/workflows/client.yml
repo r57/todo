@@ -29,13 +29,22 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - uses: actions/setup-node@v1.1.0
-      name: run frontend test
+      name: run frontend integration
       with:
         node-version: '10.x'
     
+    - name: run frontend install
+      working-directory: ./client/
+      run: yarn install
+
+    - name: run frontend lint
+      working-directory: ./client/
+      run: yarn run lint
+
+    - name: run frontend build
+      working-directory: ./client/
+      run: yarn build
+
     - name: run frontend tests
       working-directory: ./client/
-      run: |
-        yarn install
-        yarn build
-        yarn test
+      run: yarn test

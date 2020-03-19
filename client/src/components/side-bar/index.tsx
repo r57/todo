@@ -19,6 +19,6 @@ export default class SideBar extends Component {
         ))}
         <InviteFriends />
       </div>
-    )
+    );
   }
 }

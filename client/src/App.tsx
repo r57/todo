@@ -5,10 +5,9 @@ import MainAppRouter from './app-router';
 import { BrowserRouter } from 'react-router-dom';
 
 export default class App extends Component {
-
   render() {
     return (
-      <div id="app-container">
+      <div id='app-container'>
         <BrowserRouter>
           <SideBar />
           <ContentComponent>

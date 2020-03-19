@@ -21,27 +21,34 @@ const GET_LIST_ITEMS = gql`
   }
 `;
 
-interface ListItemProps extends RouteComponentProps {}
-
 interface WrappedListItem {
   todos: Todo[];
 }
 
-const ListComponent: React.FC<ListItemProps> = (props) => {
-  
+const ListComponent: React.FC<RouteComponentProps> = props => {
   const { loading, error, data } = useQuery<WrappedListItem>(GET_LIST_ITEMS);
 
   return (
     <Fragment>
-      <AddListModal></AddListModal>
-      { loading ? <p>Loading ...</p> : null }
-      { error ? <p>There was an error fetching the list, please try again. </p> : null }
-      { !data || !data.todos.length ? <p>No Todo lists available. </p> : null }
-      { data ? data.todos.map(listItem => (
-        <ListItemComponent key={listItem.id} {...listItem} clicked={() => { props.history.push(`${props.match.url}/${listItem.id}`) }}/>
-      )) : null }
+      <AddListModal />
+      {loading ? <p>Loading ...</p> : null}
+      {error ? (
+        <p>There was an error fetching the list, please try again. </p>
+      ) : null}
+      {!data || !data.todos.length ? <p>No Todo lists available. </p> : null}
+      {data
+        ? data.todos.map(listItem => (
+            <ListItemComponent
+              key={listItem.id}
+              {...listItem}
+              clicked={() => {
+                props.history.push(`${props.match.url}/${listItem.id}`);
+              }}
+            />
+          ))
+        : null}
     </Fragment>
   );
-}
+};
 
 export default ListComponent;
