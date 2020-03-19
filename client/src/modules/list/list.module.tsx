@@ -13,7 +13,7 @@ export default class ListModule extends Component<RouteComponentProps> {
           component={ListComponent}
         />
         <Route
-          path={`${this.props.match.url}/:itemId`}
+          path={`${this.props.match.url}/:todoId`}
           component={SingleListItemComponent}
         />
       </Switch>
