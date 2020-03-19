@@ -1,23 +1,30 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Todo } from '../list-item/list-item.model';
-import { TextField, Button, Modal, Checkbox, IconButton } from '@material-ui/core';
+import { Todo, TodoItem } from '../list-item/list-item.model';
+import {
+  TextField,
+  Button,
+  Modal,
+  Checkbox,
+  IconButton,
+  Card,
+  CardContent,
+  CardHeader,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import './single-list-item.component.scss'
-
-interface listItemProps extends RouteComponentProps<{ itemId: string }> {
-}
+import './single-list-item.component.scss';
+import SortableList from '../../../components/sortable-list';
 
 interface WrappedTodo {
   todo: Todo;
 }
 
 const GET_TODO = gql`
-  query todo ($id:String!){
-    todo (id:$id) {
+  query todo($id: String!) {
+    todo(id: $id) {
       id
       title
       comment
@@ -27,36 +34,54 @@ const GET_TODO = gql`
         content
         done
         created
+        index
       }
     }
-  }`;
+  }
+`;
 
 const EDIT_TODO = gql`
   mutation editTodo($id: String!, $title: String, $comment: String) {
-    editTodo(id: $id, title: $title, comment: $comment){
+    editTodo(id: $id, title: $title, comment: $comment) {
       id
       title
       comment
     }
-  }`;
+  }
+`;
 
 const ADD_TODO_ITEM = gql`
-  mutation addTodoItem($todoId : String!, $content: String!) {
+  mutation addTodoItem($todoId: String!, $content: String!) {
     addTodoItem(todoId: $todoId, content: $content) {
       index
     }
-  }`;
+  }
+`;
 
 const EDIT_TODO_ITEM = gql`
-  mutation editTodoItem($todoId: String!, $id: String!, $content: String, $done: Boolean) {
-    editTodoItem(todoId: $todoId, id: $id, content: $content, done: $done) {
+  mutation editTodoItem(
+    $todoId: String!
+    $id: String!
+    $content: String
+    $done: Boolean
+    $index: Float
+  ) {
+    editTodoItem(
+      todoId: $todoId
+      id: $id
+      content: $content
+      done: $done
+      index: $index
+    ) {
       id
       todoId
       content
       done
       created
+      index
     }
-  }`;
+  }
+`;
 
 const REMOVE_TODO_ITEM = gql`
   mutation removeTodoItem($todoId: String!, $id: String!) {
@@ -64,31 +89,35 @@ const REMOVE_TODO_ITEM = gql`
   }
 `;
 
-const SingleListItemComponent: React.FC<listItemProps> = (props) => {
-  const [items, setItems] = useState("");
+const SingleListItemComponent: React.FC<RouteComponentProps<{
+  itemId: string;
+}>> = props => {
+  const [items, setItems] = useState('');
   const [addTodoItemOpen, setAddTodoItemOpen] = useState(false);
   const [validTitle, setValidTitle] = useState(true);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
 
-  const { data, loading, error } = useQuery<WrappedTodo>(GET_TODO,
-    { variables: { id: props.match.params.itemId } }
-  );
+  const { data, loading, error } = useQuery<WrappedTodo>(GET_TODO, {
+    variables: { id: props.match.params.itemId },
+  });
 
   const [editTodo] = useMutation(EDIT_TODO);
   const [addTodoItem] = useMutation(ADD_TODO_ITEM, {
-    refetchQueries: 
-    [{ 
-      query: GET_TODO, 
-      variables: { id: props.match.params.itemId } 
-    }],
+    refetchQueries: [
+      {
+        query: GET_TODO,
+        variables: { id: props.match.params.itemId },
+      },
+    ],
   });
   const [editTodoItem] = useMutation(EDIT_TODO_ITEM);
   const [removeTodoItem] = useMutation(REMOVE_TODO_ITEM, {
-    refetchQueries: 
-    [{ 
-      query: GET_TODO, 
-      variables: { id: props.match.params.itemId } 
-    }],
+    refetchQueries: [
+      {
+        query: GET_TODO,
+        variables: { id: props.match.params.itemId },
+      },
+    ],
   });
 
   const handleTodoItemOpen = () => {
@@ -97,10 +126,10 @@ const SingleListItemComponent: React.FC<listItemProps> = (props) => {
 
   const handleTodoItemClose = () => {
     setAddTodoItemOpen(false);
-  }; 
+  };
 
   useEffect(() => {
-    setTitle(data?.todo.title ?? "");
+    setTitle(data?.todo.title ?? '');
   }, [data]);
 
   if (loading) return <p>Loading ...</p>;
@@ -108,107 +137,163 @@ const SingleListItemComponent: React.FC<listItemProps> = (props) => {
   if (!data) return <p>There is no data for selected todo.</p>;
 
   return (
-    <div>
-      <h2>Edit {data.todo.title}</h2>
-      <TextField name="titleField" label="Title" fullWidth value={title} required
-        onChange={(e) => setTitle(e.target.value)}
-        onBlur={(e) => {
-          if (e.target.value && e.target.value.trim().length > 0) {
+    <Card className='height-100'>
+      <CardHeader>
+        <h2>Edit {data.todo.title}</h2>
+      </CardHeader>
+      <CardContent>
+        <TextField
+          name='titleField'
+          label='Title'
+          fullWidth={true}
+          value={title}
+          required={true}
+          onChange={e => setTitle(e.target.value)}
+          onBlur={e => {
+            if (e.target.value && e.target.value.trim().length > 0) {
+              editTodo({
+                variables: {
+                  id: data.todo.id,
+                  title: e.target.value,
+                },
+              });
+              setValidTitle(true);
+            } else {
+              setValidTitle(false);
+            }
+          }}
+        />
+        <em hidden={validTitle}>Title is required</em>
+        <TextField
+          label='Comment'
+          fullWidth={true}
+          value={data.todo.comment}
+          onChange={e => {
             editTodo({
               variables: {
                 id: data.todo.id,
-                title: e.target.value
-              }
-            })
-            setValidTitle(true);
-          }
-          else { setValidTitle(false); }
-        }} />
-        <em hidden={validTitle}>Title is required</em>
-      <TextField label="Comment" fullWidth value={data.todo.comment}
-        onChange={(e) => {
-          editTodo({
-            variables: {
-              id: data.todo.id,
-              comment: e.target.value
-            }
-          })
-        }} />
-      <div className="todo-item-list">
-        <div className="todo-item-container">
-          <b>Items</b>
-          <IconButton onClick={handleTodoItemOpen}
-            color="primary" title="Add items" size="small">
-            <AddIcon />
-          </IconButton>
-        </div>
-        <Modal open={addTodoItemOpen} onClose={handleTodoItemClose}>
-          <div className="modal-inner">
-            <h2>Add new Todo items</h2>
-            <p>You can add more todo items at once by dividing them with enter</p>
-            <TextField multiline={true} label="Items" rows="4" fullWidth onChange={(e) => setItems(e.target.value)} />
-            <div className="modal-bottom-container">
-              <Button variant="contained" color="primary" disabled={items.trim().length === 0}
-                onClick={() => {
+                comment: e.target.value,
+              },
+            });
+          }}
+        />
+        <div className='todo-item-list'>
+          <div className='todo-item-container'>
+            <b>Items</b>
+            <IconButton
+              onClick={handleTodoItemOpen}
+              color='primary'
+              title='Add items'
+              size='small'>
+              <AddIcon />
+            </IconButton>
+          </div>
+          <Modal open={addTodoItemOpen} onClose={handleTodoItemClose}>
+            <div className='modal-inner'>
+              <h2>Add new Todo items</h2>
+              <p>
+                You can add more todo items at once by dividing them with enter
+              </p>
+              <TextField
+                multiline={true}
+                label='Items'
+                rows='4'
+                fullWidth={true}
+                onChange={e => setItems(e.target.value)}
+              />
+              <div className='modal-bottom-container'>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  disabled={items.trim().length === 0}
+                  onClick={() => {
                     const dividedTodoItems = items.split('\n');
                     dividedTodoItems.forEach(item => {
                       if (item.trim().length !== 0) {
                         addTodoItem({
                           variables: {
                             todoId: data.todo.id,
-                            content: item
-                          }
+                            content: item,
+                          },
                         });
                       }
                     });
-                    setItems("");
-                  handleTodoItemClose();
-                }}>
-                Add todo items</Button>
-              <Button variant="contained" color="default" className="cancel-button"
-                onClick={() => handleTodoItemClose()}>Cancel</Button>
+                    setItems('');
+                    handleTodoItemClose();
+                  }}>
+                  Add todo items
+                </Button>
+                <Button
+                  variant='contained'
+                  color='default'
+                  className='cancel-button'
+                  onClick={() => handleTodoItemClose()}>
+                  Cancel
+                </Button>
+              </div>
             </div>
-          </div>
-        </Modal>
-        <Fragment>
-          {data.todo.items?.map((item) => {
-            return <div key={item.id} className="todo-item-container">
-              <Checkbox checked={item.done} color="primary"
-                onChange={(e) => {
-                  editTodoItem({
-                    variables: {
-                      ...item,
-                      done: e.target.checked
-                    }
-                  })
-                }} />
+          </Modal>
+          <SortableList
+            items={data.todo.items}
+            onOrderChange={({ item: changedItem, newIndex }) => {
+              editTodoItem({
+                variables: {
+                  ...changedItem,
+                  index: newIndex,
+                },
+              });
+            }}>
+            {(item: TodoItem) => (
+              <div className='todo-item-container'>
+                <Checkbox
+                  checked={item.done}
+                  color='primary'
+                  onChange={e => {
+                    editTodoItem({
+                      variables: {
+                        ...item,
+                        done: e.target.checked,
+                      },
+                    });
+                  }}
+                />
 
-              <TextField fullWidth value={item.content}
-                onChange={(e) => {
-                  editTodoItem({
-                    variables: {
-                      ...item,
-                      content: e.target.value
-                    }
-                  })
-                }}>
+                <TextField
+                  fullWidth={true}
+                  value={item.content}
+                  onChange={e => {
+                    editTodoItem({
+                      variables: {
+                        ...item,
+                        content: e.target.value,
+                      },
+                    });
+                  }}
+                />
 
-              </TextField>
-              <IconButton color="secondary" title="Remove item" aria-label="Remove list" component="span" size="small"
-                onClick={() => {
-                  removeTodoItem({
-                    variables: {
-                      todoId: item.todoId,
-                      id: item.id
-                    }
-                  })
-                }}><DeleteIcon /></IconButton>
-            </div>
-          })}
-        </Fragment>
-      </div>
-    </div>
+                <IconButton
+                  color='secondary'
+                  title='Remove item'
+                  aria-label='Remove list'
+                  component='span'
+                  size='small'
+                  onClick={() => {
+                    removeTodoItem({
+                      variables: {
+                        todoId: item.todoId,
+                        id: item.id,
+                      },
+                    });
+                  }}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            )}
+          </SortableList>
+        </div>
+      </CardContent>
+    </Card>
   );
-}
+};
 
 export default SingleListItemComponent;
