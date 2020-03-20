@@ -1,8 +1,9 @@
 import { Button } from "./components/base/button"
 import { InputField } from "./components/base/inputField"
+import { Page } from '../pages/page';
 
 
-export class List {
+export class List extends Page {
 
     static addList() {
         this.addListButton.click()
@@ -120,11 +121,13 @@ export class List {
         })
     }
 
-    static dragItem(itemToDrag, itemToReplace) {
-        const itemToReplaceSelector = this.getItemSection(itemToReplace)
+    static dragItem(itemToDrag, rowIndex) {
+        this.getItemSection(itemToDrag).find(this.dragSelector) // what is dragged
+            .drag(`div.sortable-list > div:nth-child(${rowIndex})`) // where it's dropped
+    }
 
-        this.getItemSection(itemToDrag).find(this.dragSelector).drag(itemToReplaceSelector)
-
+    static getItemsTable() {
+        return cy.get(this.itemsSelector)
     }
 }
 
@@ -148,6 +151,7 @@ List.confirmAddTaskItemButton = new Button('span:contains("Add todo items")')
 List.deleteItemButton = new Button('[title="Remove item"]')
 
 List.dragSelector = '[class="sortable-item-drag"]'
+List.itemsSelector = '[class="todo-item-list"]'
 
 // modals selectors
 // List.addListModal = '[class="add-list-form"]'
