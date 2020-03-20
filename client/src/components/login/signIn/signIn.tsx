@@ -14,7 +14,7 @@ const SignIn = () => {
   const checkEmail = () => {
     if (email !== 'dude@gmail.com' || password !== '1234') {
       alert('Wrong password dude/et');
-    } 
+    }
     return email === 'dude@gmail.com' && password === '1234';
   };
 
