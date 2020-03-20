@@ -123,9 +123,8 @@ export class List {
     static dragItem(itemToDrag, itemToReplace) {
         const itemToReplaceSelector = this.getItemSection(itemToReplace)
 
-        this.getItemSection(itemToDrag).within(() => {
-            cy.get(this.dragSelector).drag(itemToReplaceSelector)
-        })
+        this.getItemSection(itemToDrag).find(this.dragSelector).drag(itemToReplaceSelector)
+
     }
 }
 
