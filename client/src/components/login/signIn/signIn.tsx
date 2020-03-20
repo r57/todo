@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import '../login.scss';
 import { UserAuthService } from '../../../modules/services/user-auth.service';
+import '../login.scss';
 
+import { Avatar, Link, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Avatar, Typography, Link } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 const SignIn = () => {
   const [email, setEmail] = useState('dude@gmail.com');
   const [password, setPassword] = useState('1234');
-  
+
   const checkEmail = () => {
     if (email !== 'dude@gmail.com' || password !== '1234') {
       alert('Wrong password dude/et');
-      return false
+      return false;
     } else {
-        setEmail('dude@gmail.com');
-        setPassword('1234');
-        return true
+      setEmail('dude@gmail.com');
+      setPassword('1234');
+      return true;
     }
-  }
+  };
 
   return (
     <div className='fade-in'>
