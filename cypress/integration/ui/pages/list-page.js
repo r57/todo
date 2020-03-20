@@ -151,7 +151,7 @@ List.confirmAddTaskItemButton = new Button('span:contains("Add todo items")')
 List.deleteItemButton = new Button('[title="Remove item"]')
 
 List.dragSelector = '[class="sortable-item-drag"]'
-List.itemsSelector = '[class="todo-item-list"]'
+List.itemsSelector = '[class="todo-item-container"] > div [class="MuiInputBase-input MuiInput-input"]'
 
 // modals selectors
 // List.addListModal = '[class="add-list-form"]'
