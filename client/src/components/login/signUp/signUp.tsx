@@ -29,7 +29,7 @@ const SignUp = () => {
   const [signUp] = useMutation(SIGNUP);
 
   return (
-    <>
+    <div className='fade-in'>
       <div className='login-label-box'>
         <Avatar className='avatar'>
           <LockOutlinedIcon />
@@ -114,7 +114,7 @@ const SignUp = () => {
           Sign Up
         </Button>
       </form>
-    </>
+    </div>
   );
 };
 
