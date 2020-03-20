@@ -124,8 +124,7 @@ export class List {
         const itemToReplaceSelector = this.getItemSection(itemToReplace)
 
         this.getItemSection(itemToDrag).within(() => {
-            cy.get(this.dragSelector)
-            .drag(itemToReplaceSelector)
+            cy.get(this.dragSelector).drag(itemToReplaceSelector)
         })
     }
 }

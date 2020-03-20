@@ -186,7 +186,7 @@ describe('Tasks Manipulation', function () {
         List.setListItemTitle(`${itemTitle1}{enter}${itemTitle2}{enter}${itemTitle3}`)
         List.confirmAddListItem()
 
-        List.dragItem(itemTitle1, itemTitle2)
+        List.dragItem(itemTitle1, itemTitle2)      
 
         /*cy.get(itemTextSelector).eq(0)
             .should('have.value', 'Item A')

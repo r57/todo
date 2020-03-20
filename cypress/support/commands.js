@@ -33,7 +33,7 @@ function isAttached(element) {
 }
 
 const DragSimulator = {
-  MAX_TRIES: 5,
+  MAX_TRIES: 1,
   DELAY_INTERVAL_MS: 10,
   counter: 0,
   targetElement: null,
