@@ -102,6 +102,8 @@ export class List {
             .parent()
             .parent()
             .parent()
+            .parent()
+            .parent()
     }
 
     static changeItemTitle(oldTitle, newTitle) {
@@ -117,13 +119,22 @@ export class List {
             this.deleteItemButton.click()
         })
     }
+
+    static dragItem(itemToDrag, itemToReplace) {
+        const itemToReplaceSelector = this.getItemSection(itemToReplace)
+
+        this.getItemSection(itemToDrag).within(() => {
+            cy.get(this.dragSelector)
+            .drag(itemToReplaceSelector)
+        })
+    }
 }
 
 // input field selectors
 List.emailInput = new InputField('label:contains("Email")~div>input')
 List.taskTitleInput = new InputField('label:contains("Title")~div>input')
 List.taskCommentInput = new InputField('label:contains("Comment")')
-List.editListTitleInput = new InputField('[name="titleField"]')
+List.editListTitleInput = new InputField('label:contains("Title")~div>input')
 List.editListCommentInput = new InputField('label:contains("Comment")~div>input')
 List.listItemTitleInput = new InputField('label:contains("Items")~div>textarea')
 
@@ -137,6 +148,8 @@ List.editListButton = new Button('span:contains("Edit List")')
 List.addTaskItemsButton = new Button('[title="Add items"]')
 List.confirmAddTaskItemButton = new Button('span:contains("Add todo items")')
 List.deleteItemButton = new Button('[title="Remove item"]')
+
+List.dragSelector = '[class="sortable-item-drag"]'
 
 // modals selectors
 // List.addListModal = '[class="add-list-form"]'

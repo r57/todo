@@ -167,4 +167,43 @@ describe('Tasks Manipulation', function () {
         // expect(Page.checkMainContentText('have.text', newItemTitle))
     })
 
+    it('User can sort tasks by drag and drop', function () {
+        const timestamp = Date.now()
+        const listTitle = 'Do It On: ' + timestamp
+        const itemTitle1 = 'I have to do this tang no. 1'
+        const itemTitle2 = 'I have to do this tang no. 2'
+        const itemTitle3 = 'I have to do this tang no. 3'
+
+        NavBar.goTo('List')
+
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()    
+
+        List.editList(listTitle)
+       
+        List.addListItem()
+        List.setListItemTitle(`${itemTitle1}{enter}${itemTitle2}{enter}${itemTitle3}`)
+        List.confirmAddListItem()
+
+        List.dragItem(itemTitle1, itemTitle2)
+
+        /*cy.get(itemTextSelector).eq(0)
+            .should('have.value', 'Item A')
+        cy.get(itemTextSelector).eq(1)
+            .should('have.value', 'Item B')
+        cy.get(itemTextSelector).eq(2)
+            .should('have.value', 'Item C')
+
+        cy.get(itemDragSelector).eq(2)
+            .drag(itemDragSelector)
+
+        cy.get(itemTextSelector).eq(0)
+            .should('have.value', 'Item A')
+        cy.get(itemTextSelector).eq(1)
+            .should('have.value', 'Item C')
+        cy.get(itemTextSelector).eq(2)
+            .should('have.value', 'Item B')*/
+    })
+
 })
