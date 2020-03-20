@@ -16,6 +16,11 @@ export class Page {
             extractedText.should(option, text)
         })
     }
+
+    static getSelectorOfElem(element) {
+        return Cypress.SelectorPlayground.getSelector(element)
+    }
+    
 }
 
 Page.mainContent = '[class*="content-container"]'

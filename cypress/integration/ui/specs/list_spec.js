@@ -167,4 +167,29 @@ describe('Tasks Manipulation', function () {
         // expect(Page.checkMainContentText('have.text', newItemTitle))
     })
 
+
+    it('User can sort tasks by drag and drop', function () {
+        const timestamp = Date.now()
+        const listTitle = 'Do It On: ' + timestamp
+        const itemTitle1 = 'I have to do this tang no. 1'
+        const itemTitle2 = 'I have to do this tang no. 2'
+        const itemTitle3 = 'I have to do this tang no. 3'
+        const itemIndexToMove = 3
+
+        NavBar.goTo('List')
+
+        List.addList()
+        List.setListTitle(listTitle)
+        List.confirmAddListModal()    
+
+        List.editList(listTitle)
+       
+        List.addListItem()
+        List.setListItemTitle(`${itemTitle1}{enter}${itemTitle2}{enter}${itemTitle3}`)
+        List.confirmAddListItem()
+
+        List.dragItem(itemTitle2, itemIndexToMove)
+
+        expect(List.getRow(itemIndexToMove-1).invoke('val').should('equal', itemTitle2)) // index-1 since its handled as array, with index starting with 0
+    })
 })

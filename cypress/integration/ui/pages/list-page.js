@@ -1,15 +1,16 @@
 import { Button } from "./components/base/button"
 import { InputField } from "./components/base/inputField"
+import { Page } from '../pages/page';
 
 
-export class List {
+export class List extends Page {
 
     static addList() {
         this.addListButton.click()
     }
 
     static setListTitle(listTitle) {
-        this.taskTitleInput.getInputField()
+        this.getListTitleInputField()
             .type(listTitle)
     }
 
@@ -54,7 +55,7 @@ export class List {
     }
 
     static getListTitleInputField() {
-        return this.editListTitleInput.getInputField()
+        return this.taskTitleInput.getInputField()
     }
 
     static getListCommentInputField() {
@@ -102,6 +103,8 @@ export class List {
             .parent()
             .parent()
             .parent()
+            .parent()
+            .parent()
     }
 
     static changeItemTitle(oldTitle, newTitle) {
@@ -117,13 +120,21 @@ export class List {
             this.deleteItemButton.click()
         })
     }
+
+    static dragItem(itemToDrag, rowIndex) {
+        this.getItemSection(itemToDrag).find(this.dragSelector) // what is dragged
+            .drag(`div.sortable-list > div:nth-child(${rowIndex})`) // where it's dropped
+    }
+
+    static getRow(index) {
+        return cy.get(this.itemsSelector).eq(index)
+    }
 }
 
 // input field selectors
 List.emailInput = new InputField('label:contains("Email")~div>input')
 List.taskTitleInput = new InputField('label:contains("Title")~div>input')
 List.taskCommentInput = new InputField('label:contains("Comment")')
-List.editListTitleInput = new InputField('[name="titleField"]')
 List.editListCommentInput = new InputField('label:contains("Comment")~div>input')
 List.listItemTitleInput = new InputField('label:contains("Items")~div>textarea')
 
@@ -137,6 +148,9 @@ List.editListButton = new Button('span:contains("Edit List")')
 List.addTaskItemsButton = new Button('[title="Add items"]')
 List.confirmAddTaskItemButton = new Button('span:contains("Add todo items")')
 List.deleteItemButton = new Button('[title="Remove item"]')
+
+List.dragSelector = '[class="sortable-item-drag"]'
+List.itemsSelector = '[class="todo-item-container"] > div [class="MuiInputBase-input MuiInput-input"]'
 
 // modals selectors
 // List.addListModal = '[class="add-list-form"]'
