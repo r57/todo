@@ -126,8 +126,8 @@ export class List extends Page {
             .drag(`div.sortable-list > div:nth-child(${rowIndex})`) // where it's dropped
     }
 
-    static getItemsTable() {
-        return cy.get(this.itemsSelector)
+    static getRow(index) {
+        return cy.get(this.itemsSelector).eq(index)
     }
 }
 
