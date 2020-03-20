@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { UserAuthService } from '../../../modules/services/user-auth.service';
 import '../login.scss';
 
-import { Avatar, Link, Typography } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
