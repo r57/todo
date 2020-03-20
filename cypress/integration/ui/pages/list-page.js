@@ -10,7 +10,7 @@ export class List extends Page {
     }
 
     static setListTitle(listTitle) {
-        this.taskTitleInput.getInputField()
+        this.getListTitleInputField()
             .type(listTitle)
     }
 
@@ -55,7 +55,7 @@ export class List extends Page {
     }
 
     static getListTitleInputField() {
-        return this.editListTitleInput.getInputField()
+        return this.taskTitleInput.getInputField()
     }
 
     static getListCommentInputField() {
@@ -135,7 +135,6 @@ export class List extends Page {
 List.emailInput = new InputField('label:contains("Email")~div>input')
 List.taskTitleInput = new InputField('label:contains("Title")~div>input')
 List.taskCommentInput = new InputField('label:contains("Comment")')
-List.editListTitleInput = new InputField('label:contains("Title")~div>input')
 List.editListCommentInput = new InputField('label:contains("Comment")~div>input')
 List.listItemTitleInput = new InputField('label:contains("Items")~div>textarea')
 
